@@ -10,29 +10,26 @@ import './main.css'
 function App() {
 
   const [devs, setDevs] = useState([])
-  const [latitude, setLatitude] = useState("")
-  const [longitude, setLongitude] = useState("")
   const [nome, setNome] = useState("")
   const [tarefa, setTarefa] = useState("")
   const [meta, setMeta] = useState("")
-  const [_id, set_id] = useState("")
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords
-        setLatitude(latitude)
-        setLongitude(longitude)
-        console.log('Localização reconhecida com sucesso!')
-      },
-      (err) => {
-        console.log('Erro ao pegar a localização2')
-      },
-      {
-        timeout: 30000
-      }
-    )
-  }, [])
+  // useEffect(() => {
+  //   navigator.geolocation.getCurrentPosition(
+  //     (position) => {
+  //       const { latitude, longitude } = position.coords
+  //       setLatitude(latitude)
+  //       setLongitude(longitude)
+  //       console.log('Localização reconhecida com sucesso!')
+  //     },
+  //     (err) => {
+  //       console.log('Erro ao pegar a localização2')
+  //     },
+  //     {
+  //       timeout: 30000
+  //     }
+  //   )
+  // }, [])
 
   useEffect(() => {
     async function loadDevs() {
@@ -64,7 +61,7 @@ function App() {
   return (
     <div id="app">
       <aside>
-        <strong>Cadastrar</strong>
+        <strong>Inserir Tarefas</strong>
         <form onSubmit={handleAddDev}>
           <div className="input-block">
             <label htmlFor="nome">Nome</label>
@@ -80,19 +77,6 @@ function App() {
             <label htmlFor="tarefa">Meta</label>
             <input name="meta" id="meta" required value={meta} onChange={e => setMeta(e.target.value)} />
           </div>
-
-          <div className="input-group">
-            <div className="input-block">
-              <label htmlFor="latitude">Latitude</label>
-              <input type="number" name="latitude" id="latitude" required value={latitude} onChange={e => setLatitude(e.target.value)} />
-            </div>
-
-            <div className="input-block">
-              <label htmlFor="longitude">Longitude</label>
-              <input type="number" name="longitude" id="longitude" required value={longitude} onChange={e => setLatitude(e.target.value)} />
-            </div>
-          </div>
-
           <button type="submit">Salvar</button>
         </form>
 

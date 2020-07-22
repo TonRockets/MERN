@@ -30,15 +30,10 @@ function App() {
   //     }
   //   )
   // }, [])
-
-  useEffect(() => {
-    async function loadDevs() {
-      const response = await axios.get('http://localhost:3003/api/nomes')
-
-      setDevs(response.data)
-    }
-    loadDevs()
-  }, [])
+  async function loadDevs() {
+    const response = await axios.get('http://localhost:3003/api/nomes')
+    setDevs(response.data)
+  }
 
   async function handleAddDev(e) {
 
@@ -47,16 +42,26 @@ function App() {
       tarefa,
       meta
     })
-
-    console.log(response.data)
   }
 
-  async function handleRemove(_id) {
+  // async function handleRemove(_id) {
+  //   try {
+  //     await axios.delete(`http://localhost:3002/api/nomes/${_id}`, { _id })
+  //     loadDevs()
+  //   } catch (error) {
+  //     console.log('aconteceu um erro ...', error)
+  //   }
 
-    const response = await axios.delete(`http://localhost:3003/api/nomes/${_id}`, { _id })
-
-    console.log(response)
+  function handleRemove(_id) {
+    axios.delete(`http://localhost:3003/api/nomes/${_id}`, { _id }).then(( ) => {
+      loadDevs()
+    }).catch(err => console.log('aconteceu um erro', err))
   }
+
+  useEffect(() => {
+
+    loadDevs()
+  }, [])
 
   return (
     <div id="app">
@@ -79,22 +84,21 @@ function App() {
           </div>
           <button type="submit">Salvar</button>
         </form>
-
       </aside>
 
       <main>
         <ul >
           {devs.map(dev => (
-              <li key={dev._id} valule={dev._id} className="dev-item">
-                <header>
-                  <div className="user-info">
-                    <strong>{dev.nome}</strong>
-                    <span>{dev.tarefa}</span>
-                    <p>{dev.meta}</p>
-                    <a href="http://localhost:3000/"><button type="button" onClick={() => handleRemove(dev._id)}>Excluir</button></a>
-                  </div>
-                </header>
-              </li>
+            <li key={dev._id} valule={dev._id} className="dev-item">
+              <header>
+                <div className="user-info">
+                  <strong>{dev.nome}</strong>
+                  <span>{dev.tarefa}</span>
+                  <p>{dev.meta}</p>
+                  <button type="button" onClick={() => handleRemove(dev._id)}>Excluir</button>
+                </div>
+              </header>
+            </li>
           ))}
         </ul>
       </main>
